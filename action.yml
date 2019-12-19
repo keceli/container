@@ -1,16 +1,15 @@
 # action.yml
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'test'
+description: 'action test'
 inputs:
   who-to-greet:  # id of input
-    description: 'Who to greet'
-    required: true
-    default: 'World'
+    description: 'testing'
+    required: false
+    default: ''
 outputs:
   time: # id of output
-    description: 'The time we greeted you'
+    description: 'test output'
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.who-to-greet }}
+
