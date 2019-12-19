@@ -39,7 +39,7 @@ RUN apt-get update && \
     cd cmake-$version.$build/ && \
     ./bootstrap && \
     make -j4  && \
-    make install && \
+    make install
     
     
 ENV PATH=$PATH:/container/mpich-${MPICH_VERSION}/install/bin
