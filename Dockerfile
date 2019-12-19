@@ -13,8 +13,6 @@ ENV CMAKE_VERSION=
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         build-essential \
-        gcc \
-        gfortran \
         git \
         curl \
         ca-certificates \
