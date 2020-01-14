@@ -18,7 +18,8 @@ RUN apt-get update && \
         vim \
         time \
         ca-certificates \
-        wget && \
+        wget \
+        python3-dev && \
     apt-get clean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
