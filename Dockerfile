@@ -50,9 +50,7 @@ RUN cd /container && \
     python3 create_src_directory.py && \
     python3 -m pip install . --upgrade && \
     # Install cppyy https://cppyy.readthedocs.io/en/latest/repositories.html
-    cd /container && \
-    git clone https://bitbucket.org/wlav/cppyy-backend.git && \
-    cd cppyy-backend/clingwrapper && \
+    cd /container/cppyy-backend/clingwrapper && \
     python3 -m pip install . --upgrade && \
     #
     cd /container && \
