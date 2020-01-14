@@ -55,10 +55,12 @@ RUN cd /container && \
     cd cppyy-backend/clingwrapper && \
     python3 -m pip install . --upgrade && \
     #
+    cd /container && \
     git clone https://bitbucket.org/wlav/CPyCppyy.git && \
     cd CPyCppyy && \
     python3 -m pip install . --upgrade && \
     #
+    cd /container && \
     git clone https://bitbucket.org/wlav/cppyy.git && \
     cd cppyy && \
     python3 -m pip install . --upgrade
