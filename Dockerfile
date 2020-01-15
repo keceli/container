@@ -42,5 +42,9 @@ RUN apt-get update && \
     make -j4  && \
     make install
     
+RUN cd /container && \ 
+    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
+    python3 get-pip.py 
+    
 ENV PATH=$PATH:/container/mpich-${MPICH_VERSION}/install/bin
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/container/mpich-${MPICH_VERSION}/install/lib
