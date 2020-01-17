@@ -7,7 +7,9 @@ FROM gcc:9.2.0
 LABEL maintainer "Murat Keceli <keceli@gmail.com>"
 
 ENV MPICH_VERSION=3.3.2
-ENV CMAKE_VERSION=
+ENV CMAKE_VERSION=3.16
+ENV LLVM_VERSION=9
+ENV MINICONDA3_VERSION=4.5.11
 
 # Install system packages
 RUN apt-get update --fix-missing && \
@@ -40,7 +42,7 @@ RUN cd /container && \
     
 # Install cmake   
 RUN cd /container && \
-    version=3.16 && \
+    version=$CMAKE_VERSION && \
     build=0 && \
     wget https://cmake.org/files/v$version/cmake-$version.$build.tar.gz && \
     tar -xzvf cmake-$version.$build.tar.gz && \
@@ -54,10 +56,15 @@ RUN cd /container && \
     python3 get-pip.py 
 
 #install LLVM latest version
-RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+#RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+#Install LLVM 9
+RUN cd /container && \ 
+    wget https://apt.llvm.org/llvm.sh && \ 
+    chmod +x llvm.sh && \ 
+    ./llvm.sh $LLVM_VERSION
 
 #install miniconda3
-RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.5.11-Linux-x86_64.sh -O ~/miniconda.sh && \
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-${MINICONDA3_VERSION}-Linux-x86_64.sh -O ~/miniconda.sh && \
     /bin/bash ~/miniconda.sh -b -p /opt/conda && \
     rm ~/miniconda.sh && \
     /opt/conda/bin/conda clean -tipsy && \
