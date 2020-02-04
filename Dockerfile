@@ -6,10 +6,14 @@
 FROM gcc:9.2.0
 LABEL maintainer "Murat Keceli <keceli@gmail.com>"
 
+#Versions of the packages in this container
+ENV GCC_VERSION=9.2.0
 ENV MPICH_VERSION=3.3.2
 ENV CMAKE_VERSION=3.16
 ENV LLVM_VERSION=9
 ENV MINICONDA3_VERSION=4.5.11
+ENV PYTHON_VERSION=2.7.16
+ENV PYTHON3_VERSION=3.7.3
 
 # Install system packages
 RUN apt-get update --fix-missing && \
@@ -20,6 +24,7 @@ RUN apt-get update --fix-missing && \
         git \
         curl \
         vim \
+        less \
         time \
         bzip2 \
         ca-certificates \
@@ -55,9 +60,9 @@ RUN cd /container && \
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
     python3 get-pip.py 
 
-#install LLVM latest version
+#To install LLVM latest version
 #RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
-#Install LLVM 9
+#Install LLVM
 RUN cd /container && \ 
     wget https://apt.llvm.org/llvm.sh && \ 
     chmod +x llvm.sh && \ 
