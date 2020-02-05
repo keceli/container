@@ -21,10 +21,10 @@ RUN apt-get update --fix-missing && \
 
 
 # Install tiledarray 
-RUN cd /container && /
-    git clone https://github.com/ValeevGroup/tiledarray.git && /
-    cd tiledarray && /
-    mkdir build && /
-    cd build && /
-    cmake -DTA_BUILD_UNITTEST=True .. && /
+RUN cd /container && \
+    git clone https://github.com/ValeevGroup/tiledarray.git && \
+    cd tiledarray && \
+    mkdir build && \
+    cd build && \
+    cmake -DTA_BUILD_UNITTEST=True .. && \
     make
