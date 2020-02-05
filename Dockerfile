@@ -15,6 +15,12 @@ ENV MINICONDA3_VERSION=4.5.11
 ENV PYTHON_VERSION=2.7.16
 ENV PYTHON3_VERSION=3.7.3
 
+# Use my dot files
+RUN wget https://raw.githubusercontent.com/keceli/kiler/master/dotfiles/.bashrc -O ~/.bashrc && \
+    wget https://raw.githubusercontent.com/keceli/kiler/master/dotfiles/.bash_aliases && \
+    wget https://raw.githubusercontent.com/keceli/kiler/master/dotfiles/.bash_functions && \
+    wget https://raw.githubusercontent.com/keceli/kiler/master/dotfiles/.vimrc
+
 # Install system packages
 RUN apt-get update --fix-missing && \
     apt-get install -y --no-install-recommends \
