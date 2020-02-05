@@ -17,4 +17,4 @@ RUN apt-get update --fix-missing && \
         libboost-all-dev && \
     apt-get clean && \
     apt-get autoremove && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
