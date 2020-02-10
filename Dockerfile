@@ -17,9 +17,9 @@ ENV PYTHON3_VERSION=3.7.3
 
 # Use my dot files
 RUN wget https://raw.githubusercontent.com/keceli/kiler/master/dotfiles/.bashrc -O ~/.bashrc && \
-    wget https://raw.githubusercontent.com/keceli/kiler/master/dotfiles/.bash_aliases && \
-    wget https://raw.githubusercontent.com/keceli/kiler/master/dotfiles/.bash_functions && \
-    wget https://raw.githubusercontent.com/keceli/kiler/master/dotfiles/.vimrc
+    wget https://raw.githubusercontent.com/keceli/kiler/master/dotfiles/.bash_aliases ~/.bash_aliases && \
+    wget https://raw.githubusercontent.com/keceli/kiler/master/dotfiles/.bash_functions ~/.bash_functions && \
+    wget https://raw.githubusercontent.com/keceli/kiler/master/dotfiles/.vimrc ~/.vimrc
 
 # Install system packages
 RUN apt-get update --fix-missing && \
