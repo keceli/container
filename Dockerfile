@@ -10,6 +10,7 @@ LABEL maintainer "Murat Keceli <keceli@gmail.com>"
 # Install blas, lapack, tbb, boost
 RUN apt-get update --fix-missing && \
     apt-get install -y --no-install-recommends \
+        google-perftools libgoogle-perftools-dev \
         libblas-dev \
         liblapack-dev \  
         liblapacke-dev \
@@ -22,9 +23,9 @@ RUN apt-get update --fix-missing && \
 
 # Install tiledarray 
 RUN cd /container && \
-    git clone https://github.com/ValeevGroup/tiledarray.git && \
-    cd tiledarray && \
+    git clone https://github.com/m-a-d-n-e-s-s/madness.git && \
+    cd madness && \
     mkdir build && \
     cd build && \
-    cmake -DTA_BUILD_UNITTEST=True .. && \
+    cmake  .. && \
     make
