@@ -24,6 +24,7 @@ RUN apt-get update --fix-missing && \
 # Install cereal
 RUN cd /container && \
     git clone https://github.com/USCiLab/cereal.git && \
+    cd cereal && \
     mkdir build && \
     cd build && \
     cmake  -DSKIP_PORTABILITY_TEST=ON -DCMAKE_CXX_STANDARD=17 .. && \
