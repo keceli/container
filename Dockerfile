@@ -43,5 +43,5 @@ RUN cd /container && \
     git checkout cereal-archive && \
     mkdir build_cereal && \
     cd build_cereal && \
-    cmake -CMAKE_BUILD_TYPE=DEBUG .. && \
+    cmake -DCMAKE_BUILD_TYPE=DEBUG .. && \
     make
