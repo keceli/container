@@ -37,11 +37,14 @@ RUN cd /container && \
     cd madness && \
     mkdir build && \
     cd build && \
-    cmake  .. && \
-    make && \
-    cd .. && \
-    git checkout cereal-archive && \
-    mkdir build_cereal && \
-    cd build_cereal && \
     cmake -DCMAKE_BUILD_TYPE=DEBUG .. && \
-    make
+    make && \
+    make test_ar && \
+    cd /container && \
+    git clone https://github.com/keceli/madness.git keceli_madness&& \
+    cd keceli_madness && \
+    git checkout parallel_archive &&\
+    mkdir build && \
+    cd build && \
+    cmake  -DCMAKE_BUILD_TYPE=DEBUG .. && \
+    make test_ar
