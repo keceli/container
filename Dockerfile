@@ -47,4 +47,4 @@ RUN cd /container && \
     mkdir build && \
     cd build && \
     cmake  -DCMAKE_BUILD_TYPE=DEBUG .. && \
-    make test_ar
+    make test_ar 2>&1 > make.log || echo "Build failed!"
