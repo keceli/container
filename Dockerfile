@@ -1,110 +1,82 @@
-# docker build . -t <MYIMAGE>
-# docker run -it <MYIMAGE> bash
-# Authors:
-# Murat Keceli <keceli@gmail.com>
+FROM        ubuntu:20.04
 
-FROM gcc:9.2.0
-LABEL maintainer "Murat Keceli <keceli@gmail.com>"
+# This Dockerfile aim to reproduce the setup in the Github Actions cloud
+# instances as closely as possible.
+#
 
-#Versions of the packages in this container
-ENV GCC_VERSION=9.2.0
-ENV MPICH_VERSION=3.3.2
-ENV CMAKE_VERSION=3.16
-ENV LLVM_VERSION=9
-ENV MINICONDA3_VERSION=4.5.11
-ENV PYTHON_VERSION=2.7.16
-ENV PYTHON3_VERSION=3.7.3
+ENV         LC_ALL C.UTF-8
+ENV         LANG C.UTF-8
+ENV         DEBIAN_FRONTEND "noninteractive" 
+ENV         TZ "US"
 
-# Use my dot files
-RUN wget https://raw.githubusercontent.com/keceli/kiler/master/dotfiles/.bashrc -O ~/.bashrc && \
-    wget https://raw.githubusercontent.com/keceli/kiler/master/dotfiles/.bash_aliases && \
-    wget https://raw.githubusercontent.com/keceli/kiler/master/dotfiles/.bash_functions && \
-    wget https://raw.githubusercontent.com/keceli/kiler/master/dotfiles/.vimrc
+RUN         apt-get update \
+            && apt-get -y install software-properties-common
 
-# Install system packages
-RUN apt-get update --fix-missing && \
-    apt-get install -y --no-install-recommends \
-        build-essential \
-        software-properties-common \
-        lsb-release \
-        git \
-        curl \
-        vim \
-        less \
-        time \
-        bzip2 \
-        ca-certificates \
-        wget \
-        python3-dev && \
-    apt-get clean && \
-    apt-get autoremove && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    mkdir -p /container 
+RUN         apt-get update \
+            && apt-get -y upgrade \
+            && apt-get -y install git \
+            && apt-get -y install libboost-all-dev libgslcblas0 libgsl-dev \
+            && apt-get -y install -f clang-format-9 \
+            && apt-get -y install -f doxygen \
+            && apt-get -y install libeigen3-dev wget vim
 
-# Install mpich
-RUN cd /container && \
-    wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz && \
-    tar xf mpich-${MPICH_VERSION}.tar.gz && \
-    rm -f  mpich-${MPICH_VERSION}.tar.gz  && \
-    cd mpich-${MPICH_VERSION} && \
-    ./configure --prefix=/container/mpich-${MPICH_VERSION}/install --disable-wrapper-rpath && \
-    make -j4 && \
-    make install
-    
-# Install cmake   
-RUN cd /container && \
-    version=$CMAKE_VERSION && \
-    build=0 && \
-    wget https://cmake.org/files/v$version/cmake-$version.$build.tar.gz && \
-    tar -xzvf cmake-$version.$build.tar.gz && \
-    cd cmake-$version.$build/ && \
-    ./bootstrap && \
-    make -j4  && \
-    make install
-    
-RUN cd /container && \ 
-    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
-    python3 get-pip.py 
+ENV         cmake_v "3.16.3"
+ENV         cmake_url_base "https://github.com/Kitware/CMake/releases/download"
+ENV         arch "Linux-x86_64"
+ENV         script_name "cmake-${cmake_v}-${arch}.sh"
 
-#To install LLVM latest version
-#RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
-#Install LLVM
-RUN cd /container && \ 
-    wget https://apt.llvm.org/llvm.sh && \ 
-    chmod +x llvm.sh && \ 
-    ./llvm.sh $LLVM_VERSION
+RUN         wget "${cmake_url_base}/v${cmake_v}/${script_name}" \
+            && yes | /bin/sh "${script_name}"
 
-#install miniconda3
-RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-${MINICONDA3_VERSION}-Linux-x86_64.sh -O ~/miniconda.sh && \
-    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
-    rm ~/miniconda.sh && \
-    /opt/conda/bin/conda clean -tipsy && \
-    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
-    echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc
+ENV         gnu_v 9
+ENV         gcc_no_v "/usr/bin/gcc"
+ENV         gcc_v "${gcc_no_v}-${gnu_v}"
+ENV         gxx_no_v "/usr/bin/g++"
+ENV         gxx_v "${gxx_no_v}-${gnu_v}"
+ENV         gfort_no_v "/usr/bin/gfortran"
+ENV         gfort_v "${gfort_no_v}-${gnu_v}"
+ENV         gcov_no_v "/usr/bin/gcov"
+ENV         gcov_v "${gcov_no_v}-${gnu_v}"
 
-ENV PATH=$PATH:/container/mpich-${MPICH_VERSION}/install/bin
-ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/container/mpich-${MPICH_VERSION}/install/lib
-    
-#RUN cd /container && \ 
-#    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
-#    python3 get-pip.py && \
-#    git clone https://bitbucket.org/wlav/cppyy-backend.git && \
-#    cd cppyy-backend/cling && \
-#    python3 setup.py egg_info && \
-#    python3 create_src_directory.py && \
-#    python3 -m pip install . --upgrade && \
-#    # Install cppyy https://cppyy.readthedocs.io/en/latest/repositories.html
-#    cd /container/cppyy-backend/clingwrapper && \
-#    python3 -m pip install . --upgrade && \
-#    #
-#    cd /container && \
-#    git clone https://bitbucket.org/wlav/CPyCppyy.git && \
-#    cd CPyCppyy && \
-#    python3 -m pip install . --upgrade && \
-#    #
-#    cd /container && \
-#    git clone https://bitbucket.org/wlav/cppyy.git && \
-#    cd cppyy && \
-#    python3 -m pip install . --upgrade
-    
-    
+RUN         add-apt-repository ppa:ubuntu-toolchain-r/test \
+            && apt-get update \
+            && apt-get -y install "gcc-${gnu_v}" "g++-${gnu_v}" "gfortran-${gnu_v}" \
+            && update-alternatives --install "${gcc_no_v}" gcc "${gcc_v}" 95 \
+                           --slave "${gxx_no_v}" g++ "${gxx_v}" \
+                           --slave "${gfort_no_v}" gfortran "${gfort_v}" \
+                           --slave "${gcov_no_v}" gcov "${gcov_v}"
+
+RUN         apt-get update \
+            && apt-get -y install liblapacke liblapacke-dev \
+            && apt-get -y install libopenblas-base libopenblas-dev \
+            && apt-get -y install openmpi-bin libopenmpi-dev \
+            && apt-get -y install libscalapack-openmpi-dev 
+
+RUN         apt-get -y install python3-pip
+
+RUN         python3 -m pip install cppyy
+
+RUN         apt-get update \
+            && apt-get -y install -f python3-venv \
+            && python3 -m venv venv \
+            && . venv/bin/activate \
+            && python -m pip install sphinx sphinx_rtd_theme
+
+ENV         arch Linux-x86_64
+ENV         cmake_root ${pwd}/cmake-"${cmake_v}"-"${arch}"
+ENV         cmake_command "${cmake_root}/bin/cmake"
+ENV         ctest_command "${cmake_root}/bin/ctest"
+
+ENV         toolchain_file ${pwd}/toolchain.cmake
+
+WORKDIR     /app
+RUN         wget https://github.com/evaleev/libint/releases/download/v2.6.0/libint-2.6.0.tgz \
+            && tar -zxf libint-2.6.0.tgz
+WORKDIR     /app/libint-2.6.0
+RUN         ${cmake_command} -H. -Bbuild -DCMAKE_INSTALL_PREFIX=/app/install \
+            -DCMAKE_CXX_FLAGS="-std=c++17" -DBUILD_SHARED_LIBS=ON
+WORKDIR     /app/libint-2.6.0/build
+RUN         make \
+			&&  make install
+
+
