@@ -1,4 +1,4 @@
-FROM nvidia/cuda:default
+FROM nvidia/cuda:11.2.2-base-ubuntu20.04
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
