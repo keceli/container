@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.2.2-base-ubuntu20.04
+FROM nvidia/cuda:11.2.2-runtime-ubuntu20.04
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
@@ -7,11 +7,11 @@ RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold"
 # build TiledArray
 # 1. basic prereqs
 RUN apt-get update && \
-    apt-get install -y python3 python3-pip python3-numpy ninja-build liblapacke-dev liblapack-dev mpich libboost-dev libeigen3-dev git wget libboost-serialization-dev libunwind-dev && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends python3 python3-pip python3-numpy ninja-build liblapacke-dev liblapack-dev mpich libboost-dev libeigen3-dev git wget libboost-serialization-dev libunwind-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # 2. recent cmake
-RUN wget --no-check-certificate -O - https://cmake.org/files/v3.17/cmake-3.17.0-Linux-x86_64.tar.gz | tar --strip-components=1 -xz -C /usr/local
+RUN wget --no-check-certificate -O - https://cmake.org/files/v3.19/cmake-3.19.0-Linux-x86_64.tar.gz | tar --strip-components=1 -xz -C /usr/local
 ENV CMAKE=/usr/local/bin/cmake
 # 3. download and build TiledArray
 RUN cd /usr/local/src && \
