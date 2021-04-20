@@ -19,9 +19,9 @@ RUN cd /usr/local/src && \
     cd /usr/local/src/tiledarray && \
     mkdir build && \
     cd build && \
-    \$CMAKE .. -G Ninja -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_INSTALL_PREFIX=/usr/local -DENABLE_CUDA=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo && \
-    \$CMAKE --build . --target tiledarray && \
-    \$CMAKE --build . --target examples && \
-    \$CMAKE --build . --target install 
+    /usr/local/bin/cmake .. -G Ninja -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_INSTALL_PREFIX=/usr/local -DENABLE_CUDA=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo && \
+    /usr/local/bin/cmake --build . --target tiledarray && \
+    /usr/local/bin/cmake --build . --target examples && \
+    /usr/local/bin/cmake --build . --target install 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
