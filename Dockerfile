@@ -1,13 +1,10 @@
 FROM nvidia/cuda:11.2.2-devel-ubuntu20.04
 
-# Use baseimage-docker's init system.
-CMD ["/sbin/my_init"]
-# update the OS
-RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold"
+
 # build TiledArray
 # 1. basic prereqs
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends python3 python3-pip python3-numpy ninja-build liblapacke-dev liblapack-dev mpich libboost-dev libeigen3-dev git wget libboost-serialization-dev libunwind-dev && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils python3 python3-pip python3-numpy ninja-build liblapacke-dev liblapack-dev mpich libboost-dev libeigen3-dev git wget libboost-serialization-dev libunwind-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # 2. recent cmake
