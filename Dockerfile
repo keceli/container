@@ -16,16 +16,7 @@ RUN         apt-get update \
             && apt-get -y install -f doxygen \
             && apt-get -y install libeigen3-dev wget vim
 
-ENV         CMAKE_V "3.16.3"
-ENV         CMAKE_URL "https://github.com/Kitware/CMake/releases/download"
-ENV         ARCH "Linux-x86_64"
-ENV         CMAKE_SCRIPT "cmake-${CMAKE_V}-${ARCH}.sh"
-ENV         CMAKE_ROOT ${PWD}/cmake-"${CMAKE_V}"-"${ARCH}"
-ENV         CMAKE_COMMAND "${CMAKE_ROOT}/bin/cmake"
-ENV         CTEST_COMMAND "${CMAKE_ROOT}/bin/ctest"
-
-RUN         wget "${CMAKE_URL}/v${CMAKE_V}/${CMAKE_SCRIPT}" \
-            && yes | /bin/sh "${CMAKE_SCRIPT}"
+ENV         CMAKE_V "3.22.4"
 
 ENV         GNU_V 9
 ENV         GCC_NO_V "/usr/bin/gcc"
@@ -54,14 +45,12 @@ RUN         apt-get update \
 
 RUN         apt-get -y install python3-pip
 
-RUN         python3 -m pip install cppyy
-
-RUN         apt-get update \
-            && apt-get -y install -f python3-venv \
-            && python3 -m venv venv \
-            && . venv/bin/activate \
-            && python -m pip install sphinx sphinx_rtd_theme
-
+RUN         python3 -m pip install cmake==${CMAKE_V}
+RUN         python3 -m pip install cppyy==2.2.0
+RUN         python3 -m pip install sphinx sphinx_rtd_theme
+RUN         python3 -m pip install pytest-benchmark
+RUN         python3 -m pip install ninjaparser
+RUN         python3 -m pip install rdkit-pypi
 
 WORKDIR     /app
 RUN         wget https://github.com/evaleev/libint/releases/download/v2.6.0/libint-2.6.0.tgz \
