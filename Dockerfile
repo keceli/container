@@ -17,7 +17,6 @@ RUN         apt-get update \
             && apt-get -y install libeigen3-dev wget vim
 
 ENV         CMAKE_V "3.22.4"
-ENV         CMAKE_CMD "cmake"
 
 ENV         GNU_V 9
 ENV         GCC_NO_V "/usr/bin/gcc"
@@ -57,11 +56,11 @@ WORKDIR     /app
 RUN         wget https://github.com/evaleev/libint/releases/download/v2.6.0/libint-2.6.0.tgz \
             && tar -zxf libint-2.6.0.tgz
 WORKDIR     /app/libint-2.6.0
-RUN         ${CMAKE_COMMAND} -GNinja -H. -Bbuild -DCMAKE_INSTALL_PREFIX=/app/install \
+RUN         cmake -GNinja -H. -Bbuild -DCMAKE_INSTALL_PREFIX=/app/install \
             -DCMAKE_CXX_FLAGS="-std=c++17" -DBUILD_SHARED_LIBS=ON
 WORKDIR     /app/libint-2.6.0/build
-RUN         ${CMAKE_COMMAND} --build .
-RUN         ${CMAKE_COMMAND} --install .
+RUN         cmake --build .
+RUN         cmake --install .
 
 WORKDIR     /app
 
