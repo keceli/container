@@ -17,6 +17,7 @@ RUN         apt-get update \
             && apt-get -y install libeigen3-dev wget vim
 
 ENV         CMAKE_V "3.22.4"
+ENV         CMAKE_CMD "cmake"
 
 ENV         GNU_V 9
 ENV         GCC_NO_V "/usr/bin/gcc"
