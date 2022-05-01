@@ -18,7 +18,7 @@ RUN         apt-get update \
 
 ENV         CMAKE_V "3.22.4"
 
-ENV         GNU_V 9
+ENV         GNU_V 10
 ENV         GCC_NO_V "/usr/bin/gcc"
 ENV         GCC_V "${GCC_NO_V}-${GNU_V}"
 ENV         GXX_NO_V "/usr/bin/g++"
@@ -27,6 +27,10 @@ ENV         GFORT_NO_V "/usr/bin/gfortran"
 ENV         GFORT_V "${GFORT_NO_V}-${gnu_v}"
 ENV         GCOV_NO_V "/usr/bin/gcov"
 ENV         GCOV_V "${GCOV_NO_V}-${GNU_V}"
+
+ENV         CC ${GCC_V}
+ENV         CXX ${GXX_V}
+ENV         FC ${GFORT_V}
 
 RUN         add-apt-repository ppa:ubuntu-toolchain-r/test \
             && apt-get update \
@@ -56,8 +60,11 @@ WORKDIR     /app
 RUN         wget https://github.com/evaleev/libint/releases/download/v2.6.0/libint-2.6.0.tgz \
             && tar -zxf libint-2.6.0.tgz
 WORKDIR     /app/libint-2.6.0
-RUN         cmake -GNinja -H. -Bbuild -DCMAKE_INSTALL_PREFIX=/app/install \
-            -DCMAKE_CXX_FLAGS="-std=c++17" -DBUILD_SHARED_LIBS=ON
+RUN         cmake -GNinja -H. -Bbuild \
+            -DCMAKE_INSTALL_PREFIX=/app/install \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_CXX_FLAGS="-std=c++17 -g" \
+            -DBUILD_SHARED_LIBS=ON
 WORKDIR     /app/libint-2.6.0/build
 RUN         cmake --build .
 RUN         cmake --install .

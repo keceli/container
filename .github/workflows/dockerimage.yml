@@ -19,6 +19,6 @@ jobs:
 
     - name: Build and push image
       run: |
-        docker build . --tag ghcr.io/keceli/test:latest
-        docker run ghcr.io/keceli/test:latest
-        docker push ghcr.io/keceli/test:latest
+        docker build . --tag ghcr.io/keceli/${GITHUB_REF_NAME}
+        docker run ghcr.io/keceli/${GITHUB_REF_NAME}
+        docker push ghcr.io/keceli/${GITHUB_REF_NAME}
