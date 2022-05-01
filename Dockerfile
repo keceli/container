@@ -18,7 +18,7 @@ RUN         apt-get update \
 
 ENV         CMAKE_V "3.22.4"
 
-ENV         GNU_V 10
+ENV         GNU_V 11
 ENV         GCC_NO_V "/usr/bin/gcc"
 ENV         GCC_V "${GCC_NO_V}-${GNU_V}"
 ENV         GXX_NO_V "/usr/bin/g++"
