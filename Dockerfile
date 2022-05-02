@@ -10,6 +10,7 @@ RUN         apt-get update \
 
 RUN         apt-get update \
             && apt-get -y upgrade \
+            && apt-get -y install clang-12 \
             && apt-get -y install git \
             && apt-get -y install libboost-all-dev libgslcblas0 libgsl-dev \
             && apt-get -y install -f clang-format-9 \
@@ -18,27 +19,9 @@ RUN         apt-get update \
 
 ENV         CMAKE_V "3.22.4"
 
-ENV         GNU_V 11
-ENV         GCC_NO_V "/usr/bin/gcc"
-ENV         GCC_V "${GCC_NO_V}-${GNU_V}"
-ENV         GXX_NO_V "/usr/bin/g++"
-ENV         GXX_V "${GXX_NO_V}-${GNU_V}"
-ENV         GFORT_NO_V "/usr/bin/gfortran"
-ENV         GFORT_V "${GFORT_NO_V}-${gnu_v}"
-ENV         GCOV_NO_V "/usr/bin/gcov"
-ENV         GCOV_V "${GCOV_NO_V}-${GNU_V}"
-
-ENV         CC ${GCC_V}
-ENV         CXX ${GXX_V}
-ENV         FC ${GFORT_V}
-
-RUN         add-apt-repository ppa:ubuntu-toolchain-r/test \
-            && apt-get update \
-            && apt-get -y install "gcc-${GNU_V}" "g++-${GNU_V}" "gfortran-${GNU_V}" \
-            && update-alternatives --install "${GCC_NO_V}" gcc "${GCC_V}" 95 \
-                           --slave "${GXX_NO_V}" g++ "${GXX_V}" \
-                           --slave "${GFORT_NO_V}" gfortran "${GFORT_V}" \
-                           --slave "${GCOV_NO_V}" gcov "${GCOV_V}"
+ENV         CC clang-12
+ENV         CXX clang++-12
+ENV         FC gfortran
 
 RUN         apt-get update \
             && apt-get -y install ninja-build \
