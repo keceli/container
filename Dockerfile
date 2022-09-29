@@ -10,7 +10,7 @@ RUN         apt-get update \
 
 RUN         apt-get update \
             && apt-get -y upgrade \
-            && apt-get -y install clang-12 \
+            && apt-get -y install clang-14 \
             && apt-get -y install git \
             && apt-get -y install libboost-all-dev libgslcblas0 libgsl-dev \
             && apt-get -y install -f clang-format-9 \
@@ -19,8 +19,8 @@ RUN         apt-get update \
 
 ENV         CMAKE_V "3.22.4"
 
-ENV         CC clang-12
-ENV         CXX clang++-12
+ENV         CC clang-14
+ENV         CXX clang++-14
 ENV         FC gfortran
 
 RUN         apt-get update \
