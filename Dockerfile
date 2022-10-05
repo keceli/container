@@ -27,8 +27,8 @@ RUN         apt-get update \
             && apt-get -y install ninja-build \
             && apt-get -y install liblapacke liblapacke-dev \
             && apt-get -y install libopenblas-base libopenblas-dev \
-            && apt-get -y install openmpi-bin libopenmpi-dev \
-            && apt-get -y install libscalapack-openmpi-dev 
+            && apt-get -y install mpich \
+            && apt-get -y install libscalapack-mpich-dev 
 
 RUN         apt-get -y install python3-pip
 
