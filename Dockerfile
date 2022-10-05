@@ -28,7 +28,8 @@ RUN         apt-get update \
             && apt-get -y install liblapacke liblapacke-dev \
             && apt-get -y install libopenblas-base libopenblas-dev \
             && apt-get -y install mpich \
-            && apt-get -y install libscalapack-mpich-dev 
+            && apt-get -y install libscalapack-mpich-dev \
+            && apt-get -y install libint2-2 
 
 RUN         apt-get -y install python3-pip
 
@@ -38,19 +39,6 @@ RUN         python3 -m pip install sphinx sphinx_rtd_theme
 RUN         python3 -m pip install pytest-benchmark
 RUN         python3 -m pip install ninjaparser
 RUN         python3 -m pip install rdkit-pypi
-
-WORKDIR     /app
-RUN         wget https://github.com/evaleev/libint/releases/download/v2.6.0/libint-2.6.0.tgz \
-            && tar -zxf libint-2.6.0.tgz
-WORKDIR     /app/libint-2.6.0
-RUN         cmake -GNinja -H. -Bbuild \
-            -DCMAKE_INSTALL_PREFIX=/app/install \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_CXX_FLAGS="-std=c++17 -g" \
-            -DBUILD_SHARED_LIBS=ON
-WORKDIR     /app/libint-2.6.0/build
-RUN         cmake --build .
-RUN         cmake --install .
 
 WORKDIR     /app
 
