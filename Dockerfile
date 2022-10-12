@@ -6,22 +6,26 @@ ENV         DEBIAN_FRONTEND "noninteractive"
 ENV         TZ "US"
 
 RUN         apt-get update \
-            && apt-get -y install software-properties-common
+            && apt-get -y install software-properties-common wget vim
 
+RUN
+	    wget https://apt.llvm.org/llvm.sh &&
+	    chmod +x llvm.sh && 
+            ./llvm.sh all
+
+ENV         CC clang-15
+ENV         CXX clang++-15
+ENV         FC gfortran
+             
 RUN         apt-get update \
             && apt-get -y upgrade \
-            && apt-get -y install clang-12 \
             && apt-get -y install git \
             && apt-get -y install libboost-all-dev libgslcblas0 libgsl-dev \
-            && apt-get -y install -f clang-format-9 \
             && apt-get -y install -f doxygen \
-            && apt-get -y install libeigen3-dev wget vim
+            && apt-get -y install libeigen3-dev 
 
 ENV         CMAKE_V "3.22.4"
 
-ENV         CC clang-12
-ENV         CXX clang++-12
-ENV         FC gfortran
 
 RUN         apt-get update \
             && apt-get -y install ninja-build \
@@ -33,7 +37,6 @@ RUN         apt-get update \
 RUN         apt-get -y install python3-pip
 
 RUN         python3 -m pip install cmake==${CMAKE_V}
-RUN         python3 -m pip install cppyy==2.2.0
 RUN         python3 -m pip install sphinx sphinx_rtd_theme
 RUN         python3 -m pip install pytest-benchmark
 RUN         python3 -m pip install ninjaparser
