@@ -12,7 +12,7 @@ RUN         apt-get update \
             && apt-get -y upgrade \
             && apt-get -y install git \
             && apt-get -y install libboost-all-dev libgslcblas0 libgsl-dev \
-            && apt-get -y install -f clang-format-9 \
+            && apt-get -y install -f clang-format \
             && apt-get -y install -f doxygen \
             && apt-get -y install libeigen3-dev wget vim
 
