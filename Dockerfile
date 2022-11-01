@@ -1,4 +1,4 @@
-FROM        ubuntu:20.04
+FROM        ubuntu:22.04
 
 ENV         LC_ALL C.UTF-8
 ENV         LANG C.UTF-8
@@ -18,7 +18,7 @@ RUN         apt-get update \
 
 ENV         CMAKE_V "3.22.4"
 
-ENV         GNU_V 11
+ENV         GNU_V 12
 ENV         GCC_NO_V "/usr/bin/gcc"
 ENV         GCC_V "${GCC_NO_V}-${GNU_V}"
 ENV         GXX_NO_V "/usr/bin/g++"
@@ -45,6 +45,7 @@ RUN         apt-get update \
             && apt-get -y install liblapacke liblapacke-dev \
             && apt-get -y install libopenblas-base libopenblas-dev \
             && apt-get -y install openmpi-bin libopenmpi-dev \
+            && apt-get -y install libint2-dev \
             && apt-get -y install libscalapack-openmpi-dev 
 
 RUN         apt-get -y install python3-pip
@@ -55,19 +56,6 @@ RUN         python3 -m pip install sphinx sphinx_rtd_theme
 RUN         python3 -m pip install pytest-benchmark
 RUN         python3 -m pip install ninjaparser
 RUN         python3 -m pip install rdkit-pypi
-
-WORKDIR     /app
-RUN         wget https://github.com/evaleev/libint/releases/download/v2.6.0/libint-2.6.0.tgz \
-            && tar -zxf libint-2.6.0.tgz
-WORKDIR     /app/libint-2.6.0
-RUN         cmake -GNinja -H. -Bbuild \
-            -DCMAKE_INSTALL_PREFIX=/app/install \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_CXX_FLAGS="-std=c++17 -g" \
-            -DBUILD_SHARED_LIBS=ON
-WORKDIR     /app/libint-2.6.0/build
-RUN         cmake --build .
-RUN         cmake --install .
 
 WORKDIR     /app
 
