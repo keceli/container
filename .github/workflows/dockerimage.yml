@@ -19,6 +19,6 @@ jobs:
 
     - name: Build and push image
       run: |
-        docker build . --tag ghcr.io/keceli/${GITHUB_REF_NAME}
+        docker build . --tag ghcr.io/keceli/${GITHUB_REF_NAME} --squash
         docker run ghcr.io/keceli/${GITHUB_REF_NAME}
         docker push ghcr.io/keceli/${GITHUB_REF_NAME}
