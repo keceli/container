@@ -50,7 +50,6 @@ RUN         apt-get update \
 RUN         apt-get -y install python3-pip
 
 RUN         python3 -m pip install cmake==${CMAKE_V}
-RUN         python3 -m pip install cppyy==2.2.0
 RUN         python3 -m pip install sphinx sphinx_rtd_theme
 RUN         python3 -m pip install pytest-benchmark
 RUN         python3 -m pip install ninjaparser
