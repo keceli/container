@@ -20,6 +20,6 @@ jobs:
     - name: Build and push image
       run: |
         export DOCKER_CLI_EXPERIMENTAL=enabled
-        docker build . --tag ghcr.io/keceli/${GITHUB_REF_NAME} --squash
+        docker build . --tag ghcr.io/keceli/${GITHUB_REF_NAME}
         docker run ghcr.io/keceli/${GITHUB_REF_NAME}
         docker push ghcr.io/keceli/${GITHUB_REF_NAME}
