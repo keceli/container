@@ -18,7 +18,7 @@ RUN         apt-get update \
 
 ENV         CMAKE_V "3.22.4"
 
-ENV         GNU_V 12
+ENV         GNU_V 9
 ENV         GCC_NO_V "/usr/bin/gcc"
 ENV         GCC_V "${GCC_NO_V}-${GNU_V}"
 ENV         GXX_NO_V "/usr/bin/g++"
@@ -51,11 +51,9 @@ RUN         apt-get update \
 RUN         apt-get -y install python3-pip
 
 RUN         python3 -m pip install cmake==${CMAKE_V}
-RUN         python3 -m pip install cppyy==2.2.0
 RUN         python3 -m pip install sphinx sphinx_rtd_theme
 RUN         python3 -m pip install pytest-benchmark
 RUN         python3 -m pip install ninjaparser
-RUN         python3 -m pip install rdkit-pypi
 
 WORKDIR     /app
 
